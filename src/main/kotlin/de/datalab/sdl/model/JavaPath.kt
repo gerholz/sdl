@@ -20,4 +20,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class JavaPath(paths: List<String>): Path(paths) {
     val packageString = this.pathString.replace("/", ".")
+    constructor(string: String): this(listOf(string))
 }

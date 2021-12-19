@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Model {
+class Model(val path: Path) {
     private val modules = mutableListOf<Module>()
 
     fun add(module: Module) = modules.add(module)

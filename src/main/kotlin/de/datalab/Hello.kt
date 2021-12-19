@@ -8,7 +8,7 @@ import de.datalab.sdl.model.JavaPath
 fun main(args: Array<String>) {
     val appDatabase = AppDatabase()
     val objectService = ObjectService()
-    val javaGenerator = JavaGenerator(appDatabase.model, JavaPath(listOf("test")))
+    val javaGenerator = JavaGenerator(appDatabase.model)
     javaGenerator.generate()
     println("Hello, World")
 }

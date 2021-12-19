@@ -28,7 +28,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class JavaGenerator(val model: Model, val path: JavaPath) {
+class JavaGenerator(val model: Model) {
 
     fun typeToString(out: PrintStream, type: Type): String = when(type) {
         is VoidType -> "void"
@@ -126,7 +126,7 @@ class JavaGenerator(val model: Model, val path: JavaPath) {
     }
 
     fun generateAndReturnFilename(namespaceMember: NamespaceMember): String {
-        val path = Path.of("test", "${namespaceMember.name}.java")
+        val path = Path.of(namespaceMember.getPath())
         Files.createDirectories(path.parent)
         val file = path.toFile()
         FileOutputStream(file).use { fos ->
@@ -142,9 +142,11 @@ class JavaGenerator(val model: Model, val path: JavaPath) {
         return file.path
     }
 
-
-    fun generate() = model.stream()
-        .flatMap { module -> module.stream() }
-        .flatMap { namespace -> namespace.stream()}
-        .map {namespaceMember ->  generateAndReturnFilename(namespaceMember)}
+    fun generate(): List<String> {
+        val modules: List<Module> = model.stream().toList()
+        val namespaces: List<Namespace> = modules.stream().flatMap { module -> module.stream() }.toList()
+        val namespaceMembers: List<NamespaceMember> = namespaces.stream().flatMap { namespace -> namespace.stream() }.toList()
+        val filenames: List<String> = namespaceMembers.stream().map { namespaceMember -> generateAndReturnFilename(namespaceMember) }.toList()
+        return filenames
+    }
 }

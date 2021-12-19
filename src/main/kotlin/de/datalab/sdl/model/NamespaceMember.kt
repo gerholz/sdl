@@ -21,4 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 interface NamespaceMember {
     val namespace: Namespace
     val name: String
+
+    fun getPath() =  "${namespace.getPath().pathString}/${name}.java"
 }

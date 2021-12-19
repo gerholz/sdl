@@ -21,9 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 class AppDatabase {
-    val model = Model()
-    val module = Module(model)
-    val namespace= Namespace(module, listOf(JavaPath(listOf("de.datalab.sdl.test"))))
+    val model = Model(Path("generated"))
+    val module = Module(model, JavaPath("de.datalab.appdatabase"), "appdatabase")
+    val namespace= Namespace(module, JavaPath("api"))
     init {
         /*
         val type = ClassType(namespace,"Type")

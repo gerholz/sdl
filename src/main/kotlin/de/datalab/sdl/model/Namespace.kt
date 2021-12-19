@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Namespace(val module: Module, val paths: List<Path>) {
+class Namespace(val module: Module, val path: JavaPath) {
 
     init {
         module.add(this)
@@ -38,6 +38,6 @@ class Namespace(val module: Module, val paths: List<Path>) {
 
     fun stream() = members.stream()
 
-    fun getJavaPath() = paths.stream().filter({it is JavaPath}).map { it as JavaPath }.findFirst()
+    fun getPath() = Path(listOf(module.getPath().pathString, path.pathString))
 
 }

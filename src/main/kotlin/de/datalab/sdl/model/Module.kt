@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Module(val model: Model) {
+class Module(val model: Model, val groupId: JavaPath, val artifactId: String) {
 
     private val namespaces: MutableList<Namespace> = mutableListOf()
 
@@ -27,5 +27,7 @@ class Module(val model: Model) {
     fun add(namespace: Namespace) = namespaces.add(namespace)
 
     fun stream() = namespaces.stream()
+
+    fun getPath() = Path(listOf(model.path.pathString, artifactId, "src/main/java", groupId.pathString))
 
 }

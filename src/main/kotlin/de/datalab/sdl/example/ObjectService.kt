@@ -21,9 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 class ObjectService {
-    val model= Model()
-    val module = Module(model)
-    val namespace = Namespace(module, listOf(JavaPath(listOf("bla"))))
+    val model= Model(Path("generated"))
+    val module = Module(model, JavaPath("de.datalab.objectservice"), "objectservice")
+    val namespace = Namespace(module, JavaPath(listOf("bla")))
     init {
         val objectType = EnumType(namespace, "ObjectType", listOf("DEVICE", "DEVICE_DIRECTORY"))
         val typedId =

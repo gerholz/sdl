@@ -22,9 +22,11 @@ open class Path(paths: List<String>) {
 
     val pathString = validate(paths)
 
+    constructor(string: String): this(listOf(string))
+
     fun validate(paths: List<String>): String {
         assert(paths.size > 0)
-        paths.forEach{path -> path.split("/").forEach { assert( it.matches(Regex("[a-z][a-z0-9]*")))}}
+        paths.forEach{path -> path.split("/").forEach { assert( it.matches(Regex("[a-z][a-z0-9]*")),{it})}}
         return paths.joinToString(separator = "/")
     }
 }
