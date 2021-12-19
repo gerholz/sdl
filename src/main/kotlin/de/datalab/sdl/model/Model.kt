@@ -1,7 +1,5 @@
 package de.datalab.sdl.model
 
-import java.lang.IllegalArgumentException
-import java.util.function.Consumer
 
 /*
 Copyright 2021 Gerhard Holzmeister
@@ -20,24 +18,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Namespace(val module: Module, val paths: List<Path>) {
+class Model {
+    private val modules = mutableListOf<Module>()
 
-    init {
-        module.add(this)
-    }
+    fun add(module: Module) = modules.add(module)
 
-    private val members = mutableListOf<NamespaceMember>()
-    private val memberNames = mutableSetOf<String>()
-
-    fun add(namespaceMember: NamespaceMember){
-        if (!memberNames.add(namespaceMember.name)) throw IllegalArgumentException()
-        members.add(namespaceMember)
-    }
-
-    fun forEach(action: Consumer<in NamespaceMember>) = members.forEach(action)
-
-    fun stream() = members.stream()
-
-    fun getJavaPath() = paths.stream().filter({it is JavaPath}).map { it as JavaPath }.findFirst()
-
+    fun stream() = modules.stream()
 }

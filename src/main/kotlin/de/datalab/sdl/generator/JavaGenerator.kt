@@ -28,7 +28,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class JavaGenerator(val model: IModel) {
+class JavaGenerator(val model: Model, val path: JavaPath) {
 
     fun typeToString(out: PrintStream, type: Type): String = when(type) {
         is VoidType -> "void"
@@ -143,8 +143,8 @@ class JavaGenerator(val model: IModel) {
     }
 
 
-    fun generate() = model.getNamespaces().stream()
-        .flatMap{ namespace -> namespace.stream()
-            .map {namespaceMember ->  generateAndReturnFilename(namespaceMember)}
-        }
+    fun generate() = model.stream()
+        .flatMap { module -> module.stream() }
+        .flatMap { namespace -> namespace.stream()}
+        .map {namespaceMember ->  generateAndReturnFilename(namespaceMember)}
 }

@@ -20,8 +20,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class AppDatabase: IModel {
-    val namespace= Namespace()
+class AppDatabase {
+    val model = Model()
+    val module = Module(model)
+    val namespace= Namespace(module, listOf(JavaPath(listOf("de.datalab.sdl.test"))))
     init {
         /*
         val type = ClassType(namespace,"Type")
@@ -79,9 +81,5 @@ class AppDatabase: IModel {
 
        // val appData = ClassType(namespace, "AppData")
 
-    }
-
-    override fun getNamespaces(): List<Namespace> {
-        return listOf(namespace)
     }
 }

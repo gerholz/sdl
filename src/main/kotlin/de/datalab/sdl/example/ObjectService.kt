@@ -20,18 +20,24 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class ObjectService: IModel {
-    val namespace = Namespace()
+class ObjectService {
+    val model= Model()
+    val module = Module(model)
+    val namespace = Namespace(module, listOf(JavaPath(listOf("bla"))))
     init {
         val objectType = EnumType(namespace, "ObjectType", listOf("DEVICE", "DEVICE_DIRECTORY"))
-        val typedId = ClassType(namespace, "TypedId", null, listOf(Member("objectType", objectType), Member("id", IntType())))
+        val typedId =
+            ClassType(namespace, "TypedId", null, listOf(Member("objectType", objectType), Member("id", IntType())))
 
         val request = ClassType(namespace, "Request", null, listOf())
-        val getEditDataForNewObject = ClassType(namespace, "GetEditDataForNewObject", request, listOf(Member("objectType", objectType), Member("parentId", typedId)))
-
+        val getEditDataForNewObject = ClassType(
+            namespace,
+            "GetEditDataForNewObject",
+            request,
+            listOf(Member("objectType", objectType), Member("parentId", typedId))
+        )
     }
 
-    override fun getNamespaces(): List<Namespace> {
-        return listOf(namespace)
-    }
+
+
 }

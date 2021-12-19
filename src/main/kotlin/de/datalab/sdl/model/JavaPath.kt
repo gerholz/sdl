@@ -18,6 +18,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-interface IModel {
-    fun getNamespaces(): List<Namespace>
+class JavaPath(paths: List<String>): Path(paths) {
+    val packageString = this.pathString.replace("/", ".")
 }
