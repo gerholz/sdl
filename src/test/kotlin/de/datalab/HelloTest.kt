@@ -19,13 +19,18 @@ class HelloTest {
 
     val model = Model(Path("generated"))
     val module = Module(model, JavaPath("de/datalab/hello"), "app")
-    val namespace = Namespace(module, JavaPath("api/dto"))
+    val namespaceDto = Namespace(module, JavaPath("api/dto"))
+    val namespaceService = Namespace(module, JavaPath("api/service"))
 
     init {
-        val a = ClassType(namespace, "A", null, listOf(Member("id", IntType()), Member("name", StringType())))
-        val b = ClassType(namespace, "B", a, listOf(Member("value", IntType())))
-        val c = ClassType(namespace, "C", a, listOf(Member("value", StringType())))
+        val a = ClassType(namespaceDto, "A", null, listOf(Member("id", IntType()), Member("name", StringType())))
+        val b = ClassType(namespaceDto, "B", a, listOf(Member("value", IntType())))
+        val c = ClassType(namespaceDto, "C", a, listOf(Member("value", StringType())))
+
+        val service = InterfaceType(namespaceService, "IService", listOf(
+            MethodType("getBasA", listOf(Member("id", IntType()), Member("name", StringType()), Member("value", IntType())), a)))
     }
+
 
 
     @Test

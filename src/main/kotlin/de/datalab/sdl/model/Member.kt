@@ -19,4 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 class Member(val name: String, val type: Type, val mandatory: Boolean = true) {
+    init {
+        assert( name.matches(Regex("[a-z][A-Za-z0-9_]*")))
+    }
 }

@@ -30,13 +30,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class JavaGenerator(val model: Model) {
 
-    fun typeToString(out: PrintStream, type: Type): String = when(type) {
+    fun typeToString(type: Type, mandatory: Boolean): String = when(type) {
         is VoidType -> "void"
         is ClassType -> type.name
         is EnumType -> type.name
-        is IntType -> if (type.mandatory) "int" else "Integer"
+        is IntType -> if (mandatory) "int" else "Integer"
         is StringType -> "String"
-        is ListType -> "ConstList<" + typeToString(out, type.type) + ">"
+        is ListType -> "ConstList<" + typeToString(type.type, false) + ">"
         else -> throw IllegalArgumentException(type.toString())
     }
 
@@ -46,7 +46,7 @@ class JavaGenerator(val model: Model) {
         separator: String = ", ",
         prefix: String = "",
         postfix: String = "",
-        transform: ((Member)-> CharSequence)? = {"${typeToString(out, it.type)} ${it.name}" }
+        transform: ((Member)-> CharSequence)? = {"${typeToString(it.type, it.type.mandatory)} ${it.name}" }
     ) = members.joinToString(
         prefix = prefix,
         separator = separator,
@@ -54,7 +54,7 @@ class JavaGenerator(val model: Model) {
         transform = transform )
 
     fun generateMethod(out: PrintStream, methodType: MethodType) {
-        out.println("${typeToString(out, methodType.returnType)} ${methodType.name}(${membersToString(out, methodType.parameters)});")
+        out.println("${typeToString(methodType.returnType, methodType.returnType.mandatory)} ${methodType.name}(${membersToString(out, methodType.parameters)});")
     }
 
     private fun generateInterface(out: PrintStream, interfaceType: InterfaceType) {
@@ -73,12 +73,34 @@ class JavaGenerator(val model: Model) {
         out.println("}")
     }
 
+    private fun firstCharToUpper(s: String) = s[0].uppercaseChar()+s.substring(1)
+
     private fun generateBuilder(out: PrintStream, classType: ClassType)
     {
         val builderClassName = "Builder"
         out.println("    public static class ${builderClassName} {")
 
-        out.println(membersToString(out, classType.members, separator = "", transform =  {"        private ${typeToString(out, it.type)} ${it.name};\n" }))
+        out.println(membersToString(out, classType.getAllMembers(), separator = "", transform =  {"        private ${typeToString(it.type, false)} ${it.name};\n" }))
+
+        classType.getAllMembers().forEach { member -> member
+            out.println("        Builder with${firstCharToUpper(member.name)}(${typeToString(member.type, member.type.mandatory)} ${member.name}) {")
+            out.println("            this.${member.name} = ${member.name};")
+            out.println("            return this;")
+            out.println("        }")
+        }
+
+        out.println("        ${classType.name} build() {")
+        classType.getAllMembers().forEach { member -> member
+            if (member.mandatory)
+            {
+                out.println("            if (${member.name} == null) throw new IllegalArgumentException(\"${member.name} == null\"); ")
+            }
+        }
+
+        out.println("            return new ${classType.name} (")
+        out.println(classType.getAllMembers().map { member -> member.name }.joinToString(separator = ",\n", transform = {"                ${it}"}))
+        out.println("            );")
+        out.println("        }")
 
         out.println("    }")
     }
@@ -92,7 +114,7 @@ class JavaGenerator(val model: Model) {
                 out,
                 classType.members,
                 separator = "",
-                transform = { "    public final ${typeToString(out, it.type)} ${it.name};\n" })
+                transform = { "    public final ${typeToString(it.type, it.type.mandatory)} ${it.name};\n" })
         )
         // constructor
         out.println("    ${classType.name} (")
