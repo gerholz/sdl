@@ -40,4 +40,6 @@ class Namespace(val module: Module, val path: JavaPath) {
 
     fun getPath() = Path(listOf(module.getPath().pathString, path.pathString))
 
+    fun getPackage() = JavaPath(listOf(module.groupId.pathString, path.pathString)).packageString
+
 }
