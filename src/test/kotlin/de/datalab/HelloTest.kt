@@ -17,8 +17,8 @@ class HelloTest {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    val model = Model(Path("generated"))
-    val module = Module(model, JavaPath("de/datalab/hello"), "app")
+    val model = Model(Path("generated/parent"))
+    val module = Module(model, JavaPath("com/test"), "api")
     val namespaceDto = Namespace(module, JavaPath("api/dto"))
     val namespaceService = Namespace(module, JavaPath("api/service"))
 
@@ -58,7 +58,7 @@ class HelloTest {
         val maven = ProcessBuilder(
             ("mvn install").split(" ")
         )
-            .directory(File("${model.path.pathString}/${module.artifactId}"))
+            .directory(File("${model.path.pathString}"))
             .inheritIO()
             .start()
 
