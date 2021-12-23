@@ -31,25 +31,10 @@ class HelloTest {
             MethodType("getBasA", listOf(Member("id", IntType()), Member("name", StringType()), Member("value", IntType())), a)))
     }
 
-
-
     @Test
     fun `test `() {
 
         val root = Files.createDirectories(Paths.get(model.path.pathString))
-
-        if (false) {
-            val maven = ProcessBuilder(
-                ("mvn archetype:generate -DgroupId=${module.groupId.packageString} -DartifactId=${module.artifactId}" +
-                        " -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false")
-                    .split(" ")
-            )
-                .directory(root.toFile())
-                .inheritIO()
-                .start()
-            maven.waitFor(1, TimeUnit.MINUTES)
-            assertEquals(0, maven.exitValue())
-        }
 
         val list = model.stream().flatMap {module -> module.stream()}.map { it.path }.toList()
         val javaGenerator = JavaGenerator(model)
