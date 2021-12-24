@@ -73,13 +73,13 @@ class JavaNamespaceGenerator(val namespace: Namespace) {
         out.println(membersToString(classType.getAllMembers(), separator = "", transform =  {"        private ${typeToString(it.type, false)} ${it.name};\n" }))
 
         classType.getAllMembers().forEach { member ->
-            out.println("        Builder with${firstCharToUpper(member.name)}(${typeToString(member.type, member.type.mandatory)} ${member.name}) {")
+            out.println("        public Builder with${firstCharToUpper(member.name)}(${typeToString(member.type, member.type.mandatory)} ${member.name}) {")
             out.println("            this.${member.name} = ${member.name};")
             out.println("            return this;")
             out.println("        }")
         }
 
-        out.println("        ${classType.name} build() {")
+        out.println("        public ${classType.name} build() {")
         classType.getAllMembers().forEach { member ->
             if (member.mandatory)
             {
@@ -91,8 +91,8 @@ class JavaNamespaceGenerator(val namespace: Namespace) {
         out.println(classType.getAllMembers().map { member -> member.name }.joinToString(separator = ",\n", transform = {"                ${it}"}))
         out.println("            );")
         out.println("        }")
-
         out.println("    }")
+
     }
 
 
@@ -108,7 +108,7 @@ class JavaNamespaceGenerator(val namespace: Namespace) {
                 transform = { "    public final ${typeToString(it.type, it.type.mandatory)} ${it.name};\n" })
         )
         // constructor
-        out.println("    ${classType.name} (")
+        out.println("    public ${classType.name} (")
         // constructor arguments
         out.println(
             membersToString(
@@ -137,7 +137,7 @@ class JavaNamespaceGenerator(val namespace: Namespace) {
     }
 
     private fun generateInterface(out: PrintStream, interfaceType: InterfaceType) {
-        out.println("interface " + interfaceType.name + "{")
+        out.println("public interface " + interfaceType.name + "{")
         interfaceType.methods.forEach({generateMethod(out, it)})
         out.println("}")
     }
