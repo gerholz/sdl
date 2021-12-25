@@ -20,8 +20,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import com.test.api.dto.A;
 import com.test.api.dto.B;
 import com.test.api.service.IService;
+import org.springframework.stereotype.Service;
 
-public class Service implements IService {
+@Service
+public class TheService implements IService {
     @Override
     public A getBasA(int id, String name, int value) {
         return new B(id, name, value);
