@@ -28,12 +28,18 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>com.test</groupId>
-          <artifactId>api</artifactId>
-          <version>1.0-SNAPSHOT</version>
-          <scope>test</scope>
-      </dependency>
+    <dependency>
+        <groupId>com.test</groupId>
+        <artifactId>api</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.test</groupId>
+      <artifactId>service</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

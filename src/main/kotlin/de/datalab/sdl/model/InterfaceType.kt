@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class InterfaceType(override val namespace: Namespace, override val name: String, val methods: List<MethodType>): NamespaceMember {
+open class InterfaceType(override val namespace: Namespace, override val name: String, val methods: List<MethodType>): NamespaceMember {
     init {
         namespace.add(this)
         var methodNames: MutableSet<String> = HashSet()

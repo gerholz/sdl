@@ -23,7 +23,13 @@ import com.test.api.service.IService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TheService implements IService {
+public class LocalService implements IService {
+
+    @Override
+    public int add(int a, int b) {
+        return a + b;
+    }
+
     @Override
     public A getBasA(int id, String name, int value) {
         return new B(id, name, value);

@@ -23,24 +23,41 @@ import static org.junit.Assert.assertTrue;
 import com.test.api.dto.A;
 import com.test.api.dto.B;
 import com.test.api.service.IService;
+import com.test.service.LocalService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class )
-@SpringBootTest
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes={LocalService.class})
 public class AppTest 
 {
 
-    private final IService service;
+    static final Logger logger = LoggerFactory.getLogger(AppTest.class);
 
-    @Autowired
-    AppTest(IService service){
-        this.service = service;
+    @Autowired private IService service;
+
+
+    public AppTest(){
     }
 
+
+    @Test
+    public void shouldDeliverSumOfAandB()
+    {
+        int a = 24;
+        int b = 39;
+        assertTrue(service.add(a, b) == a + b);
+        logger.info("Add succeeded");
+    }
 
     @Test
     public void shouldDeliverBasA()
@@ -50,7 +67,7 @@ public class AppTest
         int value = 2;
         A a = service.getBasA(id, name, value);
         assertTrue( a.id == id );
-        assertTrue( a.name == name );
+        assertTrue( a.name.equals(name) );
         B b = (B)a;
         assertTrue(b.value == value);
 

@@ -27,8 +27,11 @@ class HelloTest {
         val b = ClassType(namespaceDto, "B", a, listOf(Member("value", IntType())))
         val c = ClassType(namespaceDto, "C", a, listOf(Member("value", StringType())))
 
-        val service = InterfaceType(namespaceService, "IService", listOf(
-            MethodType("getBasA", listOf(Member("id", IntType()), Member("name", StringType()), Member("value", IntType())), a)))
+        val service = RemoteService(namespaceService, "IService", listOf(
+            MethodType("add", listOf(Member("a", IntType()), Member("b", IntType())), IntType()),
+            MethodType("getBasA", listOf(Member("id", IntType()), Member("name", StringType()), Member("value", IntType())), a)),
+            RemoteServiceData("", "Request", "Response")
+            )
     }
 
     @Test
