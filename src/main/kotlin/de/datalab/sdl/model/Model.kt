@@ -1,6 +1,5 @@
 package de.datalab.sdl.model
 
-
 /*
 Copyright 2021 Gerhard Holzmeister
 
@@ -18,10 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Model(val path: Path) {
-    private val modules = mutableListOf<Module>()
-
-    fun add(module: Module) = modules.add(module)
-
-    fun stream() = modules.stream()
+class Model {
+    val services = mutableListOf<Service>()
+    fun add(service: Service) = services.add(service)
+    fun stream() = services.stream()
 }

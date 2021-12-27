@@ -4,7 +4,6 @@ import de.datalab.sdl.model.*
 import java.io.FileOutputStream
 import java.io.PrintStream
 import java.lang.IllegalArgumentException
-import java.lang.Module
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -143,17 +142,17 @@ class JavaNamespaceGenerator(val namespace: Namespace) {
         out.println("}")
         if (interfaceType is RemoteService)
         {
-            val apiModule = Module(interfaceType.namespace.module.model, interfaceType.namespace.module.groupId, "restapi")
+            val apiModule = Module(interfaceType.namespace.module.service, interfaceType.namespace.module.groupId, "restapi")
             val requestNamespace = Namespace(apiModule, JavaPath("api/dto/request"))
             val responseNamespace = Namespace(apiModule, JavaPath("api/dto/response"))
             val requestClass = ClassType(requestNamespace, interfaceType.remoteServiceData.requestName, null, listOf())
-            val responseClass = ClassType(requestNamespace, interfaceType.remoteServiceData.responseName, null, listOf())
+            val responseClass = ClassType(responseNamespace, interfaceType.remoteServiceData.responseName, null, listOf())
             interfaceType.methods.forEach {
                 ClassType(requestNamespace, interfaceType.remoteServiceData.requestName+it.name, requestClass, it.parameters)
             }
             JavaNamespaceGenerator(requestNamespace).generateAndReturnFilename()
-            val providerModule = Module(interfaceType.namespace.module.model, interfaceType.namespace.module.groupId, "${interfaceType.namespace.module.artifactId}/restprovider")
-            val clientModule = Module(interfaceType.namespace.module.model, interfaceType.namespace.module.groupId, "${interfaceType.namespace.module.artifactId}/restclient")
+            val providerModule = Module(interfaceType.namespace.module.service, interfaceType.namespace.module.groupId, "${interfaceType.namespace.module.artifactId}/restprovider")
+            val clientModule = Module(interfaceType.namespace.module.service, interfaceType.namespace.module.groupId, "${interfaceType.namespace.module.artifactId}/restclient")
         }
     }
     private fun generateEnum(out: PrintStream, enumType: EnumType)

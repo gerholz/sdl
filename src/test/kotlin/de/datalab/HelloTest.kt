@@ -17,8 +17,9 @@ class HelloTest {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    val model = Model(Path("generated/parent"))
-    val module = Module(model, JavaPath("com/test"), "api")
+    val model = Model()
+    val service = Service(model, Path("generated/parent"))
+    val module = Module(service, JavaPath("com/test"), "api")
     val namespaceDto = Namespace(module, JavaPath("api/dto"))
     val namespaceService = Namespace(module, JavaPath("api/service"))
 
@@ -27,7 +28,7 @@ class HelloTest {
         val b = ClassType(namespaceDto, "B", a, listOf(Member("value", IntType())))
         val c = ClassType(namespaceDto, "C", a, listOf(Member("value", StringType())))
 
-        val service = RemoteService(namespaceService, "IService", listOf(
+        val remoteService = RemoteService(namespaceService, "IService", listOf(
             MethodType("add", listOf(Member("a", IntType()), Member("b", IntType())), IntType()),
             MethodType("getBasA", listOf(Member("id", IntType()), Member("name", StringType()), Member("value", IntType())), a)),
             RemoteServiceData("", "Request", "Response")
@@ -35,18 +36,17 @@ class HelloTest {
     }
 
     @Test
-    fun `test `() {
+        fun `test `() {
 
-        val root = Files.createDirectories(Paths.get(model.path.pathString))
+        val root = Files.createDirectories(Paths.get(service.path.pathString))
 
-        val list = model.stream().flatMap {module -> module.stream()}.map { it.path }.toList()
-        val javaGenerator = JavaGenerator(model)
+        val javaGenerator = JavaGenerator(service)
         val filenames = javaGenerator.generate()
 
         val maven = ProcessBuilder(
             ("mvn install").split(" ")
         )
-            .directory(File("${model.path.pathString}"))
+            .directory(File("${service.path.pathString}"))
             .inheritIO()
             .start()
 

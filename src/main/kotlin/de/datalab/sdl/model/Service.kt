@@ -1,6 +1,4 @@
-package de.datalab.sdl.generator
-
-import de.datalab.sdl.model.*
+package de.datalab.sdl.model
 
 
 /*
@@ -20,14 +18,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class JavaGenerator(val service: Service) {
+class Service(val model: Model, val path: Path) {
 
-
-    fun generate(): List<String> {
-        val modules: List<Module> = service.stream().toList()
-        val namespaces: List<Namespace> = modules.stream().flatMap { module -> module.stream() }.toList()
-        val namespaceGenerators: List<JavaNamespaceGenerator> = namespaces.stream().map { namespace -> JavaNamespaceGenerator(namespace) }.toList()
-        val filenames = namespaceGenerators.stream().flatMap { generator -> generator.generateAndReturnFilename().stream() } .toList()
-        return filenames
+    init {
+        model.add(this)
     }
+
+    private val modules = mutableListOf<Module>()
+
+    fun add(module: Module) = modules.add(module)
+
+    fun stream() = modules.stream()
 }
