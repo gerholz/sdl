@@ -35,20 +35,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={LocalService.class})
-public class AppTest 
+public class LocalServiceTest
 {
 
-    static final Logger logger = LoggerFactory.getLogger(AppTest.class);
+    static final Logger logger = LoggerFactory.getLogger(LocalServiceTest.class);
 
     @Autowired private IService service;
-
-
-    public AppTest(){
-    }
-
 
     @Test
     public void shouldDeliverSumOfAandB()
