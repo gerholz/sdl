@@ -17,8 +17,8 @@ class HelloTest {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    val model = Model()
-    val service = Service(model, Path("generated/parent"))
+    val model = Model(Path("generated"))
+    val service = Service(model, "parent")
     val module = Module(service, JavaPath("com/test"), "api")
     val namespaceDto = Namespace(module, JavaPath("api/dto"))
     val namespaceService = Namespace(module, JavaPath("api/service"))

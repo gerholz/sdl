@@ -4,7 +4,7 @@ import java.lang.IllegalArgumentException
 
 
 /*
-Copyright 2021 Gerhard Holzmeister
+Copyright 2022 Gerhard Holzmeister
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,10 +20,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-open class InterfaceType(override val namespace: Namespace, override val name: String, val methods: List<MethodType>): NamespaceMember {
+open class InterfaceType(final override val namespace: Namespace, override val name: String, val methods: List<MethodType>): NamespaceMember {
     init {
         namespace.add(this)
-        var methodNames: MutableSet<String> = HashSet()
+        val methodNames: MutableSet<String> = HashSet()
         methods.forEach({if (!methodNames.add(it.name)) throw IllegalArgumentException()})
     }
 }

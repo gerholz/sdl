@@ -2,7 +2,7 @@ package de.datalab.sdl.model
 
 
 /*
-Copyright 2021 Gerhard Holzmeister
+Copyright 2022 Gerhard Holzmeister
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,15 +18,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Service(val model: Model, val path: Path) {
+class Service(val model: Model, val name: String) {
 
-    init {
-        model.add(this)
-    }
+    val path = calculatePath(model, name)
 
     private val modules = mutableListOf<Module>()
 
     fun add(module: Module) = modules.add(module)
 
     fun stream() = modules.stream()
+
+    private fun calculatePath(model: Model, name: String) = Path(listOf(model.path.pathString, name))
 }
